@@ -99,23 +99,43 @@ def describe_node():
 def show_deployments():
     result = subprocess.run(['kubectl', 'get', 'deployments'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     output = result.stdout.decode() + result.stderr.decode()
-    text_widget.insert(tk.END, "\nOutput of 'kubectl get nodes -o wide':\n")
+    text_widget.insert(tk.END, "\nOutput of 'kubectl get deployments':\n")
     text_widget.insert(tk.END, output)
     text_widget.insert(tk.END, "\nDone\n")
 
 def describe_deployment():
-    node_name = simpledialog.askstring("Deployment Name", "Enter the deployment name:")
+    deployment_name = simpledialog.askstring("Deployment Name", "Enter the deployment name:")
 
-    if node_name is not None and node_name.strip() != "":
-        command = ['kubectl', 'describe', 'deployment', node_name]
+    if deployment_name is not None and deployment_name.strip() != "":
+        command = ['kubectl', 'describe', 'deployment', deployment_name]
         result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output = result.stdout.decode() + result.stderr.decode()
-        text_widget.insert(tk.END, f"\nOutput of 'kubectl describe deployment {node_name}':\n")
+        text_widget.insert(tk.END, f"\nOutput of 'kubectl describe deployment {deployment_name}':\n")
         text_widget.insert(tk.END, output)
         text_widget.insert(tk.END, "\nDone\n")
     
-    elif node_name is not None:
-        # user clicked "OK" without entering a name
+    elif deployment_name is not None:
+        text_widget.insert(tk.END, "Error: Please enter a deployment name.\n")
+
+def show_services():
+    result = subprocess.run(['kubectl', 'get', 'services'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    output = result.stdout.decode() + result.stderr.decode()
+    text_widget.insert(tk.END, "\nOutput of 'kubectl get services':\n")
+    text_widget.insert(tk.END, output)
+    text_widget.insert(tk.END, "\nDone\n")
+
+def describe_service():
+    service_name = simpledialog.askstring("Service Name", "Enter the service name:")
+
+    if service_name is not None and service_name.strip() != "":
+        command = ['kubectl', 'describe', 'service', service_name]
+        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output = result.stdout.decode() + result.stderr.decode()
+        text_widget.insert(tk.END, f"\nOutput of 'kubectl describe deployment {service_name}':\n")
+        text_widget.insert(tk.END, output)
+        text_widget.insert(tk.END, "\nDone\n")
+    
+    elif service_name is not None:
         text_widget.insert(tk.END, "Error: Please enter a deployment name.\n")
 
 def delete_evicted_pods():
@@ -172,6 +192,12 @@ button = tk.Button(left_frame, text=f"Show Deployments", command=show_deployment
 button.pack(side=tk.TOP, pady=5)
 
 button = tk.Button(left_frame, text=f"Describe a Deployment", command=describe_deployment)
+button.pack(side=tk.TOP, pady=5)
+
+button = tk.Button(left_frame, text=f"Show Service", command=show_services)
+button.pack(side=tk.TOP, pady=5)
+
+button = tk.Button(left_frame, text=f"Describe a Service", command=describe_service)
 button.pack(side=tk.TOP, pady=5)
 
 button = tk.Button(left_frame, text=f"Delete Evicted Pods", command=delete_evicted_pods, fg="red")
