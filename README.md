@@ -5,7 +5,8 @@ The Blazekit project is a user-friendly graphical interface that allows users to
 ## Usage
 
 v0.1
-1. Install Kubectl
+1. Clear Screen
+2. Install Kubectl
 3. Install AWS CLI
 4. Cluster Health
 5. Show Pods
@@ -18,8 +19,10 @@ v0.1
 12. Describe a Deployment
 13. Show Services
 14. Describe a Service
-15. Delete Evicted Pods
-16. Clear Screen
+15. Terminal
+16. Delete Evicted Pods
+
+![Screenshot 2023-05-27 at 3 40 40 PM](https://github.com/rishabhjain05/BlazeKit/assets/36572497/1b4d3438-181b-47c9-80a8-2f939461bf29)
 
 ## Getting Started
 
