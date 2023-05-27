@@ -138,6 +138,20 @@ def describe_service():
     elif service_name is not None:
         text_widget.insert(tk.END, "Error: Please enter a deployment name.\n")
 
+def execute_command():
+    command = simpledialog.askstring("Command", "Enter the Linux command:")
+
+    if command is not None and command.strip() != "":
+        command_parts = command.split()
+        result = subprocess.run(command_parts, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output = result.stdout.decode() + result.stderr.decode()
+        text_widget.insert(tk.END, f"\nOutput of '{command}':\n")
+        text_widget.insert(tk.END, output)
+        text_widget.insert(tk.END, "\nDone\n")
+    
+    elif command is not None:
+        text_widget.insert(tk.END, "Error: Please enter a command.\n")
+
 def delete_evicted_pods():
     all_pods_output = subprocess.run(['kubectl', 'get', 'pods'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     all_pods = all_pods_output.stdout.decode() + all_pods_output.stderr.decode()
@@ -198,6 +212,9 @@ button = tk.Button(left_frame, text=f"Show Service", command=show_services)
 button.pack(side=tk.TOP, pady=5)
 
 button = tk.Button(left_frame, text=f"Describe a Service", command=describe_service)
+button.pack(side=tk.TOP, pady=5)
+
+button = tk.Button(left_frame, text=f"Terminal", command=execute_command, fg="Green")
 button.pack(side=tk.TOP, pady=5)
 
 button = tk.Button(left_frame, text=f"Delete Evicted Pods", command=delete_evicted_pods, fg="red")
